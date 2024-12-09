@@ -13,9 +13,10 @@ mongoose.connect('mongodb://localhost:27017/sms')
 .catch((err) =>console.log("MongoDb Error",err));
 
 const smsSchema = new mongoose.Schema({
-    sender: String,
-    message: String,
-    timestamp: Date
+    sender: { type: String, required: true },
+    message: { type: String, required: true },
+    timestamp: { type: Date, required: true },
+    messageId: { type: String, required: true, unique: true } // Add messageId
 });
 
 const Sms = mongoose.model('Sms', smsSchema);
