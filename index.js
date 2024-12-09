@@ -31,6 +31,16 @@ io.on('connection', (socket) => {
     });
 });
 
+// API endpoint to fetch all SMS
+app.get('/api/sms', async (req, res) => {
+    try {
+        const smsList = await Sms.find(); // Fetch all SMS from the database
+        res.json(smsList); // Return as JSON
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch SMS' });
+    }
+});
+
 server.listen(3001, () => {
     console.log('Server is running on port 3001');
 });
