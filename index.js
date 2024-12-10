@@ -32,12 +32,12 @@ io.on('connection', (socket) => {
     });
 
     socket.on('send_sms_new', (data) => {
-        const {messageId } = data;
-        console.log('New SMS saved to DB' + messageId);
-        const newSms = new Sms(data);
-        newSms.save()
-            .then(() => console.log('SMS saved to DB'))
-            .catch(err => console.error(err));
+        // const {messageId } = data;
+        // console.log('New SMS saved to DB' + messageId);
+        // const newSms = new Sms(data);
+        // newSms.save()
+        //     .then(() => console.log('SMS saved to DB'))
+        //     .catch(err => console.error(err));
     });
 
     socket.on('get_last_message_id', async () => {
