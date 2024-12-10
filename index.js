@@ -39,6 +39,24 @@ io.on('connection', (socket) => {
             .then(() => console.log('SMS saved to DB'))
             .catch(err => console.error(err));
     });
+
+    socket.on('get_last_message_id', async () => {
+        try {
+            // Find the last inserted message (sorted by timestamp in descending order)
+            const lastMessage = await Sms.findOne().sort({ timestamp: -1 }).exec();
+            if (lastMessage) {
+                // Send the last message data back to the requesting client
+                socket.emit('last_message_id', { success: true, data: lastMessage });
+            } else {
+                // Send a response indicating no messages were found
+                socket.emit('last_message_id', { success: false, message: 'No messages found' });
+            }
+        } catch (err) {
+            console.error('Error fetching last message:', err);
+            // Send an error response back to the client
+            socket.emit('last_message_id', { success: false, message: 'Internal server error' });
+        }
+    });    
 });
 
 // API endpoint to fetch all SMS
