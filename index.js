@@ -17,7 +17,7 @@ const smsSchema = new mongoose.Schema({
     message: { type: String, required: true },
     timestamp: { type: Date, required: true },
     messageId: { type: String, unique: true }, // Add messageId
-    status: { type: Number, default: 0 } 
+    status: { type: Number} 
 });
 
 const Sms = mongoose.model('Sms', smsSchema);
