@@ -48,9 +48,11 @@ io.on('connection', (socket) => {
             if (lastMessage) {
                 // Send the last message data back to the requesting client
                 socket.emit('last_message_id', { success: true, data: lastMessage });
+                console.log('last_message_id success');
             } else {
                 // Send a response indicating no messages were found
                 socket.emit('last_message_id', { success: false, message: 'No messages found' });
+                console.log('last_message_id No messages found');
             }
         } catch (err) {
             console.error('Error fetching last message:', err);
