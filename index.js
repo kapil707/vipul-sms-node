@@ -26,17 +26,17 @@ io.on('connection', (socket) => {
     console.log('A user connected');
     
     socket.on('send_sms', async (data) => {
+
+        // Delete messages with status 0
+        const deletedCount = await Sms.deleteMany({ status: 0 });
+        console.log(`${deletedCount.deletedCount} messages with status 0 deleted.`);
+        
         const {messageId } = data;
 
         const newSms = new Sms(data);
         newSms.save()
             .then(() => console.log('SMS saved to DB messageId : ' + messageId))
             .catch(err => console.error(err));
-        
-        
-        // Delete messages with status 0
-        const deletedCount = await Sms.deleteMany({ status: 0 });
-        console.log(`${deletedCount.deletedCount} messages with status 0 deleted.`);
     });
 
     socket.on('send_sms_new', (data) => {
