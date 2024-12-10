@@ -43,12 +43,16 @@ io.on('connection', (socket) => {
     });
 
     socket.on('send_sms_new', (data) => {
-        // const {messageId } = data;
-        // console.log('New SMS saved to DB' + messageId);
-        // const newSms = new Sms(data);
-        // newSms.save()
-        //     .then(() => console.log('SMS saved to DB'))
-        //     .catch(err => console.error(err));
+        try{
+            const {messageId} = data;
+            console.log('New SMS saved to DB' + messageId);
+            const newSms = new Sms(data);
+            newSms.save()
+                .then(() => console.log('NewSms saved to DB messageId : ' + messageId))
+                .catch(err => console.error(err));
+        }catch {
+            console.log(`Error insert Message`);
+        }
     });
 
     socket.on('get_last_message_id', async () => {
