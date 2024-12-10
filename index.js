@@ -16,7 +16,8 @@ const smsSchema = new mongoose.Schema({
     sender: { type: String, required: true },
     message: { type: String, required: true },
     timestamp: { type: Date, required: true },
-    messageId: { type: String, unique: true } // Add messageId
+    messageId: { type: String, unique: true }, // Add messageId
+    status: { type: Number, default: 0 } 
 });
 
 const Sms = mongoose.model('Sms', smsSchema);
@@ -24,11 +25,18 @@ const Sms = mongoose.model('Sms', smsSchema);
 io.on('connection', (socket) => {
     console.log('A user connected');
     
-    socket.on('send_sms', (data) => {
+    socket.on('send_sms', async (data) => {
+        const {messageId } = data;
+
         const newSms = new Sms(data);
         newSms.save()
-            .then(() => console.log('SMS saved to DB'))
+            .then(() => console.log('SMS saved to DB messageId : ' + messageId))
             .catch(err => console.error(err));
+        
+        
+        // Delete messages with status 0
+        const deletedCount = await Sms.deleteMany({ status: 0 });
+        console.log(`${deletedCount.deletedCount} messages with status 0 deleted.`);
     });
 
     socket.on('send_sms_new', (data) => {
