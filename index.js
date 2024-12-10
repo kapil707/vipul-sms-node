@@ -41,6 +41,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('get_last_message_id', async () => {
+        console.log('get_last_message_id');
         try {
             // Find the last inserted message (sorted by timestamp in descending order)
             const lastMessage = await Sms.findOne().sort({ timestamp: -1 }).exec();
