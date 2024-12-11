@@ -59,7 +59,9 @@ io.on('connection', (socket) => {
         console.log('get_last_message_id');
         try {
             // Find the last inserted message (sorted by timestamp in descending order)
-            const lastMessage = await Sms.findOne().sort({ timestamp: -1 }).exec();
+            const lastMessage = await Sms.findOne({ status: 1 }) //Filter by status = 1
+            .sort({ timestamp: -1 }) // Sort by timestamp in descending order
+            .exec();
             if (lastMessage) {
                 // Send the last message data back to the requesting client
                 socket.emit('last_message_id', { success: true, data: lastMessage });
